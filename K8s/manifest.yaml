@@ -1,60 +1,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: chess-db-deployment
+  name: chess-db-deployment
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: chess-db
-    template:
-        metadata:
-            labels:
-                app: chess-db
-        spec:
-            containers:
-                - name: chess-db-app
-                  image: michav1/chess-db:0.0.2
-                  ports:
-                      - containerPort: 80
-            volumeMounts:
-                - name: backend-storage
-                  mountPath: /app/backend/results.json
-                  subPath: results.json
-                - name: backend-storage
-                  mountPath: /app/backend/users.json
-                  subPath: users.json
-            volumes:
-                - name: backend-storage
-                  hostPath:
-                      path: /data/chess-db/files # Change this to the absolute path where your files are stored on the host
-                      type: Directory # This specifies that the path is a directory
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chess-db
+  template:
+    metadata:
+      labels:
+        app: chess-db
+    spec:
+      containers:
+      - name: chess-db-app
+        image: michav1/chess-db:0.0.3
+        ports:
+        - containerPort: 80
 ---
 kind: Service
 apiVersion: v1
 metadata:
-    name: chess-db-service
+  name: chess-db-service
 spec:
-    selector:
-        app: chess-db
-    ports:
-        - port: 8080
-          targetPort: 80
+  selector:
+    app: chess-db
+  ports:
+  - port: 8080
+    targetPort: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-    name: chess-db-ingress
+  name: chess-db-ingress
 spec:
-    rules:
-        - http:
-              paths:
-                  - pathType: Prefix
-                    path: /chess-db/
-                    backend:
-                        service:
-                            name: chess-db-service
-                            port:
-                                number: 8080
----
-
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /chess-db/
+        backend:
+          service:
+            name: chess-db-service
+            port:
+              number: 8080

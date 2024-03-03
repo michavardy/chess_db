@@ -1,6 +1,6 @@
 // useTinyBase.js
 const host = window.location.hostname;
-const API_BASE_URL = `http://${host}:8000`; 
+const API_BASE_URL = `http://${host}:3000/chess-db`; 
 
 const useTinyBase = () => {
 
