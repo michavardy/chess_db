@@ -14,9 +14,16 @@ spec:
     spec:
       containers:
       - name: chess-db-app
-        image: michav1/chess-db:0.0.4
+        image: michav1/chess-db:0.0.5
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: task-pv-storage
+          mountPath: /app/backend/data
+      volumes:
+      - name: task-pv-storage
+        persistentVolumeClaim:
+          claimName: task-pv-claim
 ---
 kind: Service
 apiVersion: v1
@@ -44,3 +51,31 @@ spec:
             name: chess-db-service
             port:
               number: 8080
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---

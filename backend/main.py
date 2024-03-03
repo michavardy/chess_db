@@ -25,8 +25,8 @@ import uvicorn
 
 
 app = FastAPI()
-RESULTS = TinyDB('results.json')
-USERS = TinyDB('users.json')
+RESULTS = TinyDB('data/results.json')
+USERS = TinyDB('data/users.json')
 query = Query()
 
 # Secret key for JWT encoding and decoding
