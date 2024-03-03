@@ -151,7 +151,7 @@ def _create_access_token(data: dict, expires_delta: Optional[timedelta] = None) 
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-@app.post("/chess_db/add_users_from_csv")
+@app.post("/chess-db/add_users_from_csv")
 @protected
 def add_users_from_csv_str(current_user:TokenData, users_csv: str) -> None:
     for user in list(csv.DictReader(StringIO(users_csv), delimiter=',')):
@@ -168,7 +168,7 @@ def add_users_from_csv_str(current_user:TokenData, users_csv: str) -> None:
 
 
 # Endpoint to create a new user and return a token
-@app.post("/chess_db/register_new_user")
+@app.post("/chess-db/register_new_user")
 async def register_user(user: UserCreate) -> dict:
     # Perform user registration logic here
     new_user = User(
@@ -186,7 +186,7 @@ async def register_user(user: UserCreate) -> dict:
 
 
 # Endpoint to authenticate and return a token
-@app.post("/chess_db/authenticate", response_model=Token)
+@app.post("/chess-db/authenticate", response_model=Token)
 async def login_for_access_token(auth: Authenticate) -> dict:
     logger.info(f'attemping to authenticate: {auth}')
     user = USERS.search((query.email == auth.email) & (query.password == auth.password))
@@ -196,34 +196,34 @@ async def login_for_access_token(auth: Authenticate) -> dict:
         return {"access_token": access_token, "token_type": "bearer"}
     raise HTTPException(status_code=401, detail="Invalid credentials", headers={"WWW-Authenticate": "Bearer"})
 
-@app.post("/chess_db/getUserData")
+@app.post("/chess-db/getUserData")
 @protected
 async def get_user_data(current_user: User) -> dict:
     logger.info(f'get user data: {current_user}')
     return current_user
 
 # Example protected endpoint that requires a valid token
-@app.get("/chess_db/test")
+@app.get("/chess-db/test")
 @protected
 async def protected_route(current_user: User,  *args, **kwargs) -> dict:
     return {"message": "This is a protected route", "current_user": current_user}
 
 # return all results
-@app.post("/chess_db/get_all_results")
+@app.post("/chess-db/get_all_results")
 @protected
 async def get_all_results(current_user: User) -> list[Record]:
     logger.info(f'get all results: ')
     return RESULTS.all()
 
 # return all results
-@app.post("/chess_db/get_all_users")
+@app.post("/chess-db/get_all_users")
 @protected
 async def get_all_users(current_user: User) -> list[User]:
     logger.info(f'get all users: ')
     return USERS.all()
 
 # return all results
-@app.post("/chess_db/add_result")
+@app.post("/chess-db/add_result")
 @protected
 async def add_result(current_user: User,  record: dict) -> dict:
     # Get the current date and time in UTC
@@ -252,8 +252,8 @@ class SPAStaticFiles(StaticFiles):
             response = await super().get_response('.', scope)
         return response
 
-# Mount the static files directory (built React files) to the URL path "/chess_db/"
-app.mount("/chess_db/", SPAStaticFiles(directory="/app/frontend/build", html=True), name="static")
+# Mount the static files directory (built React files) to the URL path "/chess-db/"
+app.mount("/chess-db/", SPAStaticFiles(directory="/app/frontend/build", html=True), name="static")
 
 def start():
     uvicorn.run("backend.main:app", host="0.0.0.0", port=80, reload=True)
