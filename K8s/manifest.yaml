@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: chess-db-app
-        image: michav1/chess-db:0.0.3
+        image: michav1/chess-db:0.0.4
         ports:
         - containerPort: 80
 ---
