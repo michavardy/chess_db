@@ -1,0 +1,8 @@
+- [x] write pocketbase client
+- write pagination fetcher
+- [x] fix the two click problem
+- [x] automatically fetch records
+- fetch userData
+- add result
+- add result player dropdowns
+- add style

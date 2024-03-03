@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+tinydb
+pydantic
+PyJWT==2.8

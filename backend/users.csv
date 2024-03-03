@@ -1,0 +1,5 @@
+username,email,password,avatar,created,verified
+john,john.doe@example.com,password123,,2024/31/1,FALSE
+alice,alice.smith@example.com,secret_pass,,2024/31/1,TRUE
+bob,    bob.jones@example.com,my_password,,2024/31/1,FALSE
+emma,emma.watson@example.com,secure_pass,,2024/31/1,TRUE

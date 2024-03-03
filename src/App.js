@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import SignIn from "./TinySignIn";
+import Table from "./Table";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [userData, setUserData] = useState([]);
+  const [token, setToken] = useState(null);
+  const [records, setRecords] = useState([]);
+  const [users, setUsers] = useState([]);
+  if (isSignedIn) {
+    return (
+      <Table
+        isSignedIn={isSignedIn}
+        setIsSignedIn={setIsSignedIn}
+        userData={userData}
+        token={token}
+        records={records}
+        users={users}
+        setUserData={setUserData}
+        setToken={setToken}
+        setRecords={setRecords}
+        setUsers={setUsers}
+      />
+    );
+  } else {
+    return (
+      <SignIn
+        setIsSignedIn={setIsSignedIn}
+        setUserData={setUserData}
+        setToken={setToken}
+        setRecords={setRecords}
+        setUsers={setUsers}
+        isSignedIn={isSignedIn}
+        records={records}
+        token={token}
+        userData={userData}
+      />
+    );
+  }
 }
-
-export default App;
