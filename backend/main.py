@@ -222,7 +222,7 @@ async def get_all_users(current_user: User) -> list[User]:
     logger.info(f'get all users: ')
     return USERS.all()
 
-# return all results
+
 @app.post("/chess-db/add_result")
 @protected
 async def add_result(current_user: User,  record: dict) -> dict:
@@ -244,6 +244,18 @@ async def add_result(current_user: User,  record: dict) -> dict:
     #if record:
     #    RESULTS.insert(record.dict())
     return {"message": "Result added successfully"}
+
+@app.post("/chess-db/remove_result")
+@protected
+async def add_result(current_user: User,  record_id: dict) -> dict:
+    record_id = record_id['recordID']
+    try:
+        RESULTS.remove(Query().id == record_id)
+        return {"message": "Result removed successfully"}
+    except Exception as e:
+        print(f'remove result failed: record_id:{record_id}, error: {e}')
+        raise e
+
 
 class SPAStaticFiles(StaticFiles):
     async def get_response(self, path: str, scope):

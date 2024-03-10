@@ -1,5 +1,8 @@
 // useTinyBase.js
 const host = window.location.hostname;
+// for testing
+//const API_BASE_URL = `http://${host}/chess-db`; 
+// for production
 const API_BASE_URL = `https://${host}/chess-db`; 
 
 const useTinyBase = () => {
@@ -89,6 +92,22 @@ const useTinyBase = () => {
     }
   };
 
+  const removeResult = async (token, recordID) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/remove_result`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `bearer ${token.access_token}`,  // Include the token in the Authorization header
+        },
+        body: JSON.stringify( {recordID: recordID} ),
+      });
+      return await response.json()
+    } catch (error) {
+      console.error('Add result error:', error);
+    }
+  };
+
   const addUser = async (user) => {
     try{
       const response = await fetch(`${API_BASE_URL}/register_new_user`, {
@@ -112,7 +131,8 @@ const useTinyBase = () => {
     getAllResults,
     getAllUserData,
     addResult,
-    addUser
+    addUser,
+    removeResult
   };
 };
 

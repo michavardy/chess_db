@@ -4,7 +4,7 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.css';
 
 export default function Table(props) {
-  const {addResult } = useTinyBase();
+  const {addResult,removeResult } = useTinyBase();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     // initialize with default form values
@@ -50,6 +50,18 @@ const showIziToastError = (message) => {
 
   function handleAddResult() {
     setIsModalOpen(true);
+  }
+
+  async function handleRemoveRecord(item){
+    try{
+    removeResult(props.token, item.id)
+    showIziToastSuccess("remove result")
+    }
+    catch{
+      showIziToastError("remove result failed")
+    }
+    const allResults = await getAllResults(props.token)
+    props.setRecords(allResults)
   }
 
   function handleCloseModal() {
@@ -138,6 +150,14 @@ const showIziToastError = (message) => {
                       {item.player_white}
                     </td>
                     <td className="py-2 px-4 text-center">{item.result}</td>
+                    <td className="py-2 px-4 text-center">
+                    <button
+                      onClick={() => handleRemoveRecord(item)}
+                      className="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300"
+                    >
+                      Remove
+                    </button>
+          </td>
                   </tr>
                 );
               })}
